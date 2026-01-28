@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<!-- DEPRECATED: Use index.html (merged production version). -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OffSec AI Mentor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #000000;
+            background-color: #ffffff;
+        }
+        
+        h1, h2, h3 {
+            font-weight: 700;
+            margin: 16px 0;
+        }
+        
+        h1 { font-size: 48px; }
+        h2 { font-size: 40px; border-bottom: 3px solid #000; padding-bottom: 16px; }
+        h3 { font-size: 24px; }
+        
+        .container-main {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        section {
+            padding: 64px 24px;
+            border-bottom: 3px solid #000;
+        }
+        
+        section.hidden {
+            display: none;
+        }
+        
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+            background: #fff;
+        }
+        
+        .hero-title {
+            border: 4px solid #000;
+            padding: 24px 48px;
+            display: inline-block;
+            background-color: #ff006e;
+            color: #fff;
+            font-size: 48px;
+        }
+        
+        .hero-subtitle {
+            font-size: 20px;
+            margin: 24px 0;
+        }
+        
+        /* BUTTONS */
+        .btn {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 16px 24px;
+            border: 3px solid #000;
+            border-radius: 0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 300ms ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0px #000;
+        }
+        
+        .btn-primary {
+            background-color: #ff006e;
+            color: #fff;
+        }
+        
+        .btn-secondary {
+            background-color: #fff;
+            color: #000;
+        }
+        
+        .btn-hero {
+            font-size: 20px;
+            padding: 24px 48px;
+        }
+        
+        /* ASSESSMENT */
+        .assessment-container {
+            max-width: 700px;
+            margin: 0 auto;
+            border: 3px solid #000;
+            padding: 48px;
+            background-color: #fff;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #f5f5f5;
+            border: 2px solid #000;
+            margin-bottom: 16px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #ff006e;
+            width: 0%;
+            transition: width 500ms ease;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding: 16px;
+            border-left: 4px solid #ff006e;
+        }
+        
+        .question-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            border: 3px solid #000;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 300ms ease;
+        }
+        
+        .option-label:hover {
+            background-color: #f5f5f5;
+            transform: translate(-2px, -2px);
+        }
+        
+        .option-input { display: none; }
+        .option-input:checked + .option-label {
+            background-color: #ff006e;
+            color: #fff;
+        }
+        
+        .short-answer-input {
+            width: 100%;
+            padding: 16px;
+            border: 3px solid #000;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            background-color: #fff;
+        }
+        
+        .assessment-actions {
+            display: flex;
+            gap: 24px;
+            margin-top: 48px;
+            justify-content: space-between;
+        }
+        
+        /* CERTIFICATION */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin: 48px 0;
+        }
+        
+        .cert-card {
+            border: 3px solid #000;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 300ms ease;
+            background-color: #fff;
+        }
+        
+        .cert-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 4px 4px 0px #000;
+        }
+        
+        .cert-card.selected {
+            background-color: #ff006e;
+            color: #fff;
+        }
+        
+        .cert-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 16px 0;
+            text-transform: uppercase;
+        }
+        
+        /* ROADMAP */
+        .roadmap-container {
+            max-width: 900px;
+            margin: 0 auto;
+            border: 3px solid #000;
+            padding: 48px;
+            background-color: #fff;
+        }
+        
+        .phase-block {
+            margin: 48px 0;
+            border-left: 4px solid #ff006e;
+            padding-left: 24px;
+        }
+        
+        .phase-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+        
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px;
+            gap: 16px;
+        }
+        
+        .spinner {
+            border: 3px solid #f5f5f5;
+            border-top: 3px solid #ff006e;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* CHAT */
+        .mentor-container {
+            max-width: 900px;
+            margin: 0 auto;
+            border: 3px solid #000;
+            padding: 24px;
+            background-color: #fff;
+        }
+        
+        .chat-history {
+            min-height: 300px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 24px;
+            border: 3px solid #d0d0d0;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .chat-bubble {
+            padding: 16px 24px;
+            border: 3px solid #000;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        
+        .chat-bubble.user {
+            align-self: flex-end;
+            background-color: #ff006e;
+            color: #fff;
+        }
+        
+        .chat-bubble.mentor {
+            align-self: flex-start;
+            background-color: #fff;
+        }
+        
+        .mentor-intent-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .btn-intent {
+            background-color: #fff;
+            color: #000;
+            border: 3px solid #000;
+            width: 100%;
+            text-align: left;
+        }
+        
+        .btn-intent:hover {
+            background-color: #ff006e;
+            color: #fff;
+        }
+        
+        .chat-input-area {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .mentor-input {
+            flex: 1;
+            padding: 16px;
+            border: 3px solid #000;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            background-color: #fff;
+        }
+        
+        /* FOOTER */
+        .footer {
+            background-color: #000;
+            color: #fff;
+            padding: 48px 24px;
+            border-top: 4px solid #000;
+        }
+        
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .disclaimer {
+            border: 3px solid #fff;
+            padding: 24px;
+            margin-bottom: 48px;
+        }
+        
+        .disclaimer h3 {
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+        
+        .disclaimer p {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+        
+        .footer-meta {
+            text-align: center;
+            border-top: 3px solid rgba(255, 255, 255, 0.3);
+            padding-top: 24px;
+        }
+        
+        .footer-meta p {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .section-header {
+            margin-bottom: 24px;
+        }
+        
+        .section-subtitle {
+            font-size: 16px;
+            margin-top: 8px;
+            color: #666;
+        }
+        
+        .evaluation-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin: 48px 0;
+        }
+        
+        .evaluation-card {
+            border: 3px solid #000;
+            padding: 24px;
+            background-color: #fff;
+        }
+        
+        .evaluation-card h3 {
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        
+        .level-badge {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ff006e;
+            margin: 16px 0;
+        }
+        
+        .list-items {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .list-items li {
+            padding: 12px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .list-items li:last-child {
+            border-bottom: none;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            h2 { font-size: 24px; }
+            
+            .cert-grid { grid-template-columns: repeat(2, 1fr); }
+            .chat-bubble { max-width: 85%; }
+            .mentor-intent-buttons { grid-template-columns: 1fr; }
+            
+            section { padding: 48px 16px; }
+        }
+        
+        @media (max-width: 480px) {
+            h1 { font-size: 24px; }
+            h2 { font-size: 20px; }
+            
+            .cert-grid { grid-template-columns: 1fr; }
+            .chat-bubble { max-width: 95%; }
+            
+            section { padding: 32px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-main">
+        <!-- HERO -->
+        <section class="hero">
+            <h1 class="hero-title">OffSec AI Mentor</h1>
+            <p class="hero-subtitle">Discover your security skills. Build your path to mastery.</p>
+            <button class="btn btn-primary btn-hero" id="startBtn">Assess My Skill Level</button>
+        </section>
+
+        <!-- ASSESSMENT -->
+        <section id="assessmentSection" class="assessment hidden">
+            <div class="section-header">
+                <h2>Skill Assessment</h2>
+                <p class="section-subtitle">Answer these questions honestly. This helps us personalize your roadmap.</p>
+            </div>
+            <div class="assessment-container">
+                <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+                <div class="progress-text"><span id="questionCounter">Question 1 of 8</span></div>
+                <form id="assessmentForm" class="assessment-form">
+                    <div id="questionContainer" class="question-container"></div>
+                    <div class="assessment-actions">
+                        <button type="button" id="prevBtn" class="btn btn-secondary" style="display: none;">Previous</button>
+                        <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- EVALUATION -->
+        <section id="evaluationSection" class="evaluation hidden">
+            <div class="section-header">
+                <h2>Your Skill Evaluation</h2>
+                <p class="section-subtitle">Based on your assessment, here's where you stand.</p>
+            </div>
+            <div class="evaluation-container">
+                <div class="evaluation-card">
+                    <h3>Current Level</h3>
+                    <div id="currentLevel" class="level-badge">Analyzing...</div>
+                    <p id="levelDescription"></p>
+                </div>
+                <div class="evaluation-card">
+                    <h3>Your Strengths</h3>
+                    <ul id="strengthsList" class="list-items"><li>Loading...</li></ul>
+                </div>
+                <div class="evaluation-card">
+                    <h3>Areas to Develop</h3>
+                    <ul id="weaknessesList" class="list-items"><li>Loading...</li></ul>
+                </div>
+                <div class="evaluation-card">
+                    <h3>Your Focus</h3>
+                    <p id="focusSuggestion" class="focus-text">Loading...</p>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="selectCertBtn" style="margin-top: 24px;">Choose Your Certification</button>
+        </section>
+
+        <!-- CERTIFICATION -->
+        <section id="certSection" class="certification hidden">
+            <div class="section-header">
+                <h2>Select Your Target Certification</h2>
+                <p class="section-subtitle">Which OffSec cert aligns with your goals?</p>
+            </div>
+            <div class="cert-grid" id="certGrid"></div>
+        </section>
+
+        <!-- ROADMAP -->
+        <section id="roadmapSection" class="roadmap hidden">
+            <div class="section-header">
+                <h2>Your Personalized Roadmap</h2>
+                <p class="section-subtitle">A phase-based learning path aligned with <span id="selectedCertDisplay"></span></p>
+            </div>
+            <div class="roadmap-container">
+                <div id="roadmapContent" class="roadmap-content">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Building your personalized roadmap...</p>
+                    </div>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 900px; margin: 24px auto;">
+                <button class="btn btn-secondary" id="copyRoadmapBtn">Copy Roadmap</button>
+                <button class="btn btn-secondary" id="exportRoadmapBtn">Export as Text</button>
+            </div>
+        </section>
+
+        <!-- MENTOR CHAT -->
+        <section id="mentorSection" class="mentor hidden">
+            <div class="section-header">
+                <h2>Guided Mentor Chat</h2>
+                <p class="section-subtitle">Let's talk about your learning journey and goals.</p>
+            </div>
+            <div class="mentor-container">
+                <div id="chatHistory" class="chat-history"></div>
+                <div class="mentor-intent-buttons" id="mentorIntentButtons">
+                    <button class="btn btn-intent" data-intent="goals">💼 Career Goals</button>
+                    <button class="btn btn-intent" data-intent="choose">🎯 Choose Certs</button>
+                    <button class="btn btn-intent" data-intent="stuck">🤔 I Feel Stuck</button>
+                    <button class="btn btn-intent" data-intent="time">⏱️ Study Tips</button>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="mentorInput" class="mentor-input" placeholder="Add context... (optional)">
+                    <button class="btn btn-primary" id="sendMentorBtn">Send</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACTIONS -->
+        <section id="actionsSection" class="hidden">
+            <h2>What's Next?</h2>
+            <button class="btn btn-primary btn-hero" id="retakeBtn" style="width: 100%; margin-top: 24px;">Retake Assessment (New Questions)</button>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="disclaimer">
+                <h3>⚠️ Ethical Disclaimer</h3>
+                <p><strong>OffSec AI Mentor is an educational guidance tool only.</strong> We provide learning direction and skill assessments, not hacking instructions, exploits, or attack techniques.</p>
+                <p><strong>No certification guarantees:</strong> This roadmap increases your readiness, but success depends on your commitment and practice.</p>
+            </div>
+            <div class="footer-meta">
+                <p>&copy; 2026 OffSec AI Mentor. Built with educational integrity.</p>
+                <p>Powered by <strong>Google Gemini</strong></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

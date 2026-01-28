@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OffSec AI Mentor | Your Path to Cybersecurity Mastery</title>
+    <meta name="description" content="AI-powered offensive security learning mentor with ethical guidance, assessments, and roadmaps. Prepare for OSCP, OSEP, OSWE and more.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    
+    <!-- Marked.js removed - using pure JSON rendering instead -->
+    
+    <!-- html2pdf for PDF download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content auth-modal">
+            <button class="modal-close" id="closeAuthModal">&times;</button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="register">Register</button>
+            </div>
+            
+            <form id="loginForm" class="auth-form">
+                <h3>Welcome Back! 👋</h3>
+                <div class="form-group">
+                    <label for="loginEmail">Email or Username</label>
+                    <input type="text" id="loginEmail" placeholder="Enter your email or username" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <div id="loginError" class="form-error hidden"></div>
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+            
+            <form id="registerForm" class="auth-form hidden">
+                <h3>Join the Journey! 🚀</h3>
+                <div class="form-group">
+                    <label for="registerUsername">Username</label>
+                    <input type="text" id="registerUsername" placeholder="Choose a username" required minlength="3">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" placeholder="Create a password (min 6 chars)" required minlength="6">
+                </div>
+                <div id="registerError" class="form-error hidden"></div>
+                <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+            </form>
+            
+            <p class="auth-note">Save your progress, track your learning, and access personalized recommendations!</p>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-animation">
+                <div class="cyber-loader">
+                    <div class="loader-ring"></div>
+                    <div class="loader-ring"></div>
+                    <div class="loader-ring"></div>
+                    <div class="loader-icon">🔐</div>
+                </div>
+            </div>
+            <p id="loadingText" class="loading-text">Generating questions...</p>
+            <div class="loading-tips">
+                <p id="loadingTip">💡 Tip: Consistent practice beats cramming every time!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Selected Certificate Display Overlay -->
+    <div id="selectedCertOverlay" class="cert-selected-overlay">
+        <div class="cert-selected-content animate__animated animate__zoomIn">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <div class="container-main">
+        <!-- ============================================
+             NAVIGATION BAR
+             ============================================ -->
+        <nav class="navbar" id="navbar">
+            <div class="nav-brand">
+                <span class="nav-title">OffSec <span class="nav-highlight">AI Mentor</span></span>
+            </div>
+            <div class="nav-links">
+                <div id="navAuth" class="nav-auth">
+                    <button class="btn btn-outline btn-sm" id="loginBtn">Login</button>
+                </div>
+                <div id="navUser" class="nav-user hidden">
+                    <span id="navUsername">User</span>
+                    <button class="btn btn-ghost btn-sm" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ============================================
+             SECTION 1: HERO - CLEAN NEOBRUTALISM
+             ============================================ -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    AI-Powered Learning
+                </div>
+                
+                <h1 class="hero-title">
+                    OffSec<br>
+                    <span class="title-accent">AI Mentor</span>
+                </h1>
+                
+                <p class="hero-subtitle" id="heroSubtitle">
+                    Your personalized path to cybersecurity certification. 
+                    Assess your skills, get a custom roadmap, and master offensive security.
+                </p>
+                
+                <div class="hero-features">
+                    <div class="feature-item">
+                        <span>Skill Assessment</span>
+                    </div>
+                    <div class="feature-item">
+                        <span>Custom Roadmaps</span>
+                    </div>
+                    <div class="feature-item">
+                        <span>AI Mentor Chat</span>
+                    </div>
+                </div>
+                
+                <div class="hero-cta">
+                    <button class="btn btn-primary btn-lg" id="startBtn">
+                        Start Assessment
+                    </button>
+                    <p class="cta-note">Free • No signup required to try</p>
+                </div>
+
+                <div class="mode-toggle-container">
+                    <label class="mode-toggle">
+                        <input type="checkbox" id="modeCheckbox">
+                        <span class="toggle-label" id="modeLabel">Beginner Mode</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="visual-card">
+                    <div class="card-header">
+                        <span class="card-dot"></span>
+                        <span class="card-dot"></span>
+                        <span class="card-dot"></span>
+                    </div>
+                    <div class="card-content">
+                        <code>
+                            <span class="code-comment">// Your journey starts here</span><br>
+                            <span class="code-keyword">const</span> path = <span class="code-string">"OSCP"</span>;<br>
+                            <span class="code-keyword">const</span> mentor = <span class="code-func">AI</span>();<br>
+                            <br>
+                            mentor.<span class="code-func">assess</span>(skills);<br>
+                            mentor.<span class="code-func">guide</span>(path);<br>
+                            mentor.<span class="code-func">succeed</span>();
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mode Banner (hidden by default) -->
+        <div class="mode-banner hidden" id="modeBanner">
+            🎯 OSCP Mode Active - Advanced questions enabled
+        </div>
+
+        <!-- ============================================
+             SECTION 2: SKILL ASSESSMENT
+             ============================================ -->
+        <section id="assessmentSection" class="assessment hidden">
+            <div class="section-header">
+                <h2 id="assessmentTitle">Skill Assessment</h2>
+                <p class="section-subtitle" id="assessmentSubtitle">Answer these questions honestly. This helps us personalize your roadmap.</p>
+            </div>
+
+            <div class="assessment-container">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="questionCounter">Question 1 of 8</span>
+                </div>
+
+                <form id="assessmentForm" class="assessment-form">
+                    <div id="questionContainer" class="question-container"></div>
+                    
+                    <div class="assessment-actions">
+                        <button type="button" id="prevBtn" class="btn btn-secondary" style="display: none;">Previous</button>
+                        <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="assessment-info">
+                <p><strong>Pro Tip:</strong> There are no "perfect" answers. We're here to help you grow.</p>
+            </div>
+        </section>
+
+        <!-- ============================================
+             SECTION 2.5: ANSWER REVIEW
+             ============================================ -->
+        <section id="reviewSection" class="review hidden" data-aos="fade-up">
+            <div class="section-header">
+                <h2>Answer Review</h2>
+                <p class="section-subtitle">See your answers, the expected answers, and explanations before evaluation.</p>
+            </div>
+
+            <div id="reviewContainer" class="review-container"></div>
+
+            <div class="review-actions">
+                <button class="btn btn-primary" id="reviewContinueBtn">Continue to Evaluation</button>
+            </div>
+        </section>
+
+        <!-- ============================================
+             SECTION 3: SKILL EVALUATION OUTPUT
+             ============================================ -->
+        <section id="evaluationSection" class="evaluation hidden" data-aos="fade-up">
+            <div class="section-header">
+                <h2>Your Skill Evaluation</h2>
+                <p class="section-subtitle">Based on your assessment, here's where you stand.</p>
+            </div>
+
+            <div class="evaluation-container">
+                <!-- Current Level -->
+                <div class="evaluation-card level-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="card-title">Current Level</h3>
+                    <div id="currentLevel" class="level-badge">Analyzing...</div>
+                    <p id="levelDescription" class="level-description"></p>
+                </div>
+
+                <!-- Strength Areas -->
+                <div class="evaluation-card strengths-card" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="card-title">Your Strengths</h3>
+                    <ul id="strengthsList" class="list-items">
+                        <li>Loading...</li>
+                    </ul>
+                </div>
+
+                <!-- Weak Areas -->
+                <div class="evaluation-card weaknesses-card" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="card-title">Areas to Develop</h3>
+                    <ul id="weaknessesList" class="list-items">
+                        <li>Loading...</li>
+                    </ul>
+                </div>
+
+                <!-- Learning Focus -->
+                <div class="evaluation-card focus-card" data-aos="fade-up" data-aos-delay="400">
+                    <h3 class="card-title">Your Focus</h3>
+                    <p id="focusSuggestion" class="focus-text">Loading...</p>
+                </div>
+            </div>
+
+            <div class="evaluation-actions">
+                <button class="btn btn-primary btn-lg" id="generateRoadmapMainBtn">
+                    <span class="btn-icon">🗺️</span> Generate My Roadmap
+                </button>
+            </div>
+        </section>
+
+        <!-- ============================================
+             CERTIFICATION SELECTION MODAL
+             ============================================ -->
+        <div id="certModal" class="cert-modal hidden">
+            <div class="cert-modal-backdrop"></div>
+            <div class="cert-modal-content">
+                <div class="cert-modal-header">
+                    <h2>🎯 Choose Your Target Certification</h2>
+                    <p>Use ↑↓ arrow keys to navigate, Enter to select</p>
+                </div>
+                <div class="cert-modal-body">
+                    <div class="cert-options" id="certOptions">
+                        <div class="cert-option" data-cert="oscp" tabindex="0">
+                            <span class="cert-badge attack">ATTACK</span>
+                            <span class="cert-name">OSCP</span>
+                            <span class="cert-full">Offensive Security Certified Professional</span>
+                        </div>
+                        <div class="cert-option" data-cert="osep" tabindex="0">
+                            <span class="cert-badge attack">ATTACK</span>
+                            <span class="cert-name">OSEP</span>
+                            <span class="cert-full">Offensive Security Experienced Penetration Tester</span>
+                        </div>
+                        <div class="cert-option" data-cert="oswe" tabindex="0">
+                            <span class="cert-badge attack">ATTACK</span>
+                            <span class="cert-name">OSWE</span>
+                            <span class="cert-full">Offensive Security Web Expert</span>
+                        </div>
+                        <div class="cert-option" data-cert="osed" tabindex="0">
+                            <span class="cert-badge attack">ATTACK</span>
+                            <span class="cert-name">OSED</span>
+                            <span class="cert-full">Offensive Security Exploit Developer</span>
+                        </div>
+                        <div class="cert-option" data-cert="oswp" tabindex="0">
+                            <span class="cert-badge attack">ATTACK</span>
+                            <span class="cert-name">OSWP</span>
+                            <span class="cert-full">Offensive Security Wireless Professional</span>
+                        </div>
+                        <div class="cert-option" data-cert="osda" tabindex="0">
+                            <span class="cert-badge defense">DEFENSE</span>
+                            <span class="cert-name">OSDA</span>
+                            <span class="cert-full">Offensive Security Defense Analyst</span>
+                        </div>
+                        <div class="cert-option" data-cert="ejpt" tabindex="0">
+                            <span class="cert-badge entry">ENTRY</span>
+                            <span class="cert-name">eJPT</span>
+                            <span class="cert-full">eLearnSecurity Junior Penetration Tester</span>
+                        </div>
+                        <div class="cert-option" data-cert="ceh" tabindex="0">
+                            <span class="cert-badge entry">ENTRY</span>
+                            <span class="cert-name">CEH</span>
+                            <span class="cert-full">Certified Ethical Hacker</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cert-modal-footer">
+                    <button class="btn btn-secondary" id="certModalCancel">Cancel</button>
+                    <button class="btn btn-primary" id="certModalConfirm" disabled>Select & Generate</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certification section removed - now using modal -->
+
+        <!-- ============================================
+             SECTION 5: PERSONALIZED ROADMAP
+             ============================================ -->
+        <section id="roadmapSection" class="roadmap hidden">
+            <div class="section-header">
+                <h2 id="roadmapTitle">Your Personalized Learning Roadmap</h2>
+                <p class="section-subtitle" id="roadmapSubtitle">Building your path to certification success</p>
+            </div>
+
+            <div class="roadmap-container">
+                <div id="roadmapContent" class="roadmap-content">
+                    <!-- Roadmap will be generated here -->
+                </div>
+            </div>
+
+            <div class="roadmap-actions hidden" id="roadmapActionsDiv">
+                <button class="btn btn-secondary" id="copyRoadmapBtn">📋 Copy Roadmap</button>
+                <button class="btn btn-secondary" id="exportRoadmapBtn">💾 Export as JSON</button>
+                <button class="btn btn-secondary" id="downloadPdfBtn">📄 Download as PDF</button>
+                <button class="btn btn-primary" id="regenerateRoadmapBtn">🔄 Generate New Roadmap</button>
+            </div>
+
+            <!-- Integrated Checklist Section -->
+            <div id="roadmapChecklist" class="roadmap-checklist hidden">
+                <div class="checklist-header">
+                    <h3>Your Certification Checklist</h3>
+                    <p>Track your progress towards <span id="checklistCertName">certification</span></p>
+                </div>
+                <div class="checklist-progress-ring">
+                    <svg viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#e0e0e0" stroke-width="8"/>
+                        <circle id="checklistProgressCircle" cx="50" cy="50" r="45" fill="none" stroke="var(--color-primary)" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="283" transform="rotate(-90 50 50)"/>
+                    </svg>
+                    <div class="progress-text">
+                        <span id="checklistProgressText">0%</span>
+                    </div>
+                </div>
+                <div id="checklistItems" class="checklist-items">
+                    <!-- Checklist items generated by JS based on cert -->
+                </div>
+            </div>
+
+            <!-- Integrated Resources Section -->
+            <div id="roadmapResources" class="roadmap-resources hidden">
+                <div class="resources-header">
+                    <h3>Recommended Resources</h3>
+                    <p>Curated for your level and certification path</p>
+                </div>
+                <div id="resourcesContent" class="resources-grid">
+                    <!-- Resources generated by JS based on cert and level -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================
+             SECTION 6: GUIDED MENTOR CHAT
+             ============================================ -->
+        <section id="mentorSection" class="mentor hidden">
+            <div class="section-header">
+                <h2>Guided Mentor Chat</h2>
+                <p class="section-subtitle">Let's talk about your learning journey and goals.</p>
+            </div>
+
+            <div class="mentor-container">
+                <!-- Chat History -->
+                <div id="chatHistory" class="chat-history"></div>
+
+                <!-- Chat Input Area -->
+                <div class="chat-input-section">
+                    <div class="mentor-intent-buttons" id="mentorIntentButtons">
+                        <button class="btn btn-intent" data-intent="goals">Discuss Career Goals</button>
+                        <button class="btn btn-intent" data-intent="choose">Help Choose Certs</button>
+                        <button class="btn btn-intent" data-intent="stuck">I Feel Stuck</button>
+                        <button class="btn btn-intent" data-intent="time">Study Time Tips</button>
+                    </div>
+
+                    <div class="chat-input-area">
+                        <input 
+                            type="text" 
+                            id="mentorInput" 
+                            class="mentor-input" 
+                            placeholder="Add more context... (optional)"
+                            aria-label="Additional context for mentor"
+                        >
+                        <button class="btn btn-primary" id="sendMentorBtn">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mentor-info">
+                <p><strong>Note:</strong> Your mentor can discuss learning strategy and mindset, but can't teach technical attack methods.</p>
+            </div>
+        </section>
+
+        <!-- ============================================
+             SECTION 7: CHECKLIST / GOALS TRACKER
+             ============================================ -->
+        <section id="checklistSection" class="checklist-section hidden" data-aos="fade-up">
+            <div class="section-header">
+                <h2>📋 Your Learning Checklist</h2>
+                <p class="section-subtitle">Track your progress towards your security goals!</p>
+            </div>
+
+            <div class="checklist-container">
+                <div class="checklist-progress">
+                    <div class="progress-circle">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="progress-bg" cx="50" cy="50" r="45"></circle>
+                            <circle id="checklistProgressCircle" class="progress-fill-circle" cx="50" cy="50" r="45"></circle>
+                        </svg>
+                        <span id="checklistProgressText" class="progress-text-center">0%</span>
+                    </div>
+                    <p id="checklistProgressLabel">0 of 0 completed</p>
+                </div>
+
+                <div class="checklist-categories">
+                    <button class="category-tab active" data-category="all">All</button>
+                    <button class="category-tab" data-category="foundations">📚 Foundations</button>
+                    <button class="category-tab" data-category="platforms">🎮 Platforms</button>
+                    <button class="category-tab" data-category="tools">🔧 Tools</button>
+                    <button class="category-tab" data-category="certs">📜 Certs</button>
+                    <button class="category-tab" data-category="custom">✨ Custom</button>
+                </div>
+
+                <div id="checklistItems" class="checklist-items">
+                    <p class="login-prompt">Login to access your personalized checklist!</p>
+                </div>
+
+                <div class="add-item-form">
+                    <input type="text" id="newChecklistItem" placeholder="Add a custom goal..." class="checklist-input">
+                    <button class="btn btn-primary btn-sm" id="addChecklistBtn">+ Add</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================
+             SECTION 8: ACTIONS
+             ============================================ -->
+        <section id="actionsSection" class="actions hidden" data-aos="fade-up">
+            <div class="section-header">
+                <h2>What's Next?</h2>
+            </div>
+
+            <div class="actions-grid">
+                <button class="btn btn-primary btn-large" id="retakeBtn">
+                    <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <path d="M20.49 15a9 9 0 1 1-2-8.83"></path>
+                    </svg>
+                    Retake Assessment (New Questions)
+                </button>
+                <button class="btn btn-secondary btn-large" id="viewChecklistBtn">
+                    <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                    View My Checklist
+                </button>
+            </div>
+        </section>
+
+        <!-- ============================================
+             RESOURCES MODAL
+             ============================================ -->
+        <div id="resourcesModal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content resources-modal">
+                <button class="modal-close" id="closeResourcesModal">&times;</button>
+                <h2>📚 Curated Learning Resources</h2>
+                
+                <div class="resources-tabs">
+                    <button class="resource-tab active" data-resource="youtube">🎬 YouTube</button>
+                    <button class="resource-tab" data-resource="platforms">🎮 Platforms</button>
+                    <button class="resource-tab" data-resource="paths">🛤️ Paths</button>
+                    <button class="resource-tab" data-resource="tools">🔧 Tools</button>
+                    <button class="resource-tab" data-resource="books">📖 Books</button>
+                    <button class="resource-tab" data-resource="certs">📜 Certs</button>
+                </div>
+                
+                <div id="resourcesContent" class="resources-content">
+                    <!-- Dynamic content loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECTION 9: FOOTER / ETHICAL DISCLAIMER
+             ============================================ -->
+        <footer class="footer" data-aos="fade-up">
+            <div class="footer-content">
+                <div class="disclaimer">
+                    <h3>⚠️ Ethical Disclaimer</h3>
+                    <p>
+                        OffSec AI Mentor is an <strong>educational guidance tool only</strong>. 
+                        We provide learning direction and skill assessments, not hacking instructions, exploits, or attack techniques. 
+                        All offensive security learning must be ethical, legal, and conducted in authorized environments only.
+                    </p>
+                    <p>
+                        <strong>No certification guarantees:</strong> This roadmap increases your readiness for OffSec certifications, 
+                        but success depends on your commitment and practice.
+                    </p>
+                </div>
+
+                <div class="footer-meta">
+                    <p>&copy; 2026 OffSec AI Mentor. Built with educational integrity.</p>
+                    <p>Powered by <strong>Google Gemini</strong> | Designed for the <strong>OffSec Community</strong></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Main Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>

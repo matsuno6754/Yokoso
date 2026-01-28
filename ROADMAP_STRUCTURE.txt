@@ -1,0 +1,364 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                    DETAILED ROADMAP STRUCTURE v2.0                            ║
+║                      6-Phase Comprehensive Learning Path                      ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+📊 PHASE BREAKDOWN
+═══════════════════════════════════════════════════════════════════════════════
+
+PHASE 1: FOUNDATIONS & ESSENTIAL TOOLS
+├─ Duration: 3 weeks (15-20 hrs/week)
+├─ Prerequisites: Basic computer literacy
+├─ Tools: Linux, VirtualBox, Bash, Git, Text Editors (5 tools)
+│  └─ Each tool has: Purpose + Step-by-step learning path
+├─ Labs: 3 hands-on labs (TryHackMe)
+│  └─ Each lab has: Difficulty level + Duration estimate
+├─ Resources: YouTube, Books, Platforms (4 resources)
+├─ Daily Breakdown: 21 days of specific activities
+│  └─ Day 1-2: Linux installation and basic commands
+│  └─ Day 3-4: File system, permissions, user management
+│  └─ Day 5-7: Text editors and basic scripting
+│  └─ Day 8-14: Networking fundamentals (TCP/IP, DNS, ports)
+│  └─ Day 15-21: Virtualization setup and lab environment
+└─ Outcome: Working penetration testing environment
+   └─ Ready for Phase 2: Networking & Reconnaissance
+
+PHASE 2: NETWORKING & RECONNAISSANCE
+├─ Duration: 3 weeks (18-22 hrs/week)
+├─ Prerequisites: Phase 1 complete + Basic Linux skills
+├─ Tools: Nmap, Wireshark, Burp Suite, Metasploit, Ghidra (5 tools)
+├─ Labs: 5 hands-on labs (TryHackMe + HackTheBox)
+│  └─ Difficulty: Beginner to Easy
+│  └─ Total duration: 15+ hours
+├─ Resources: Tutorials, courses, documentation (5 resources)
+├─ Daily Breakdown: 21 days of networking progression
+│  └─ Days 1-7: Network protocols (TCP/IP, UDP, DNS)
+│  └─ Days 8-14: Passive and active enumeration
+│  └─ Days 15-21: Nmap scanning and service ID
+└─ Outcome: Network scanning and recon expertise
+
+PHASE 3: WEB APPLICATION SECURITY
+├─ Duration: 3 weeks (18-22 hrs/week)
+├─ Prerequisites: Phase 2 complete + Networking knowledge
+├─ Tools: Burp Suite Pro, OWASP ZAP, SQLmap, curl, Python (5 tools)
+├─ Labs: 8 hands-on labs (PortSwigger + HackTheBox)
+│  └─ Difficulty: Beginner to Intermediate
+│  └─ Total duration: 16+ hours
+├─ Resources: PortSwigger academy, books, tutorials (5 resources)
+├─ Daily Breakdown: 21 days of web security progression
+│  └─ Days 1-7: OWASP Top 10 and SQL injection
+│  └─ Days 8-14: XSS, CSRF, and authentication bypasses
+│  └─ Days 15-21: Real-world web application testing
+└─ Outcome: Web vulnerability identification and exploitation
+
+PHASE 4: SYSTEM HACKING & PRIVILEGE ESCALATION
+├─ Duration: 3 weeks (20-25 hrs/week)
+├─ Prerequisites: Phase 3 complete + Web and network knowledge
+├─ Tools: Hashcat, John, Metasploit, Mimikatz, Windows/Linux tools (5 tools)
+├─ Labs: 5 hands-on labs (TryHackMe + HackTheBox)
+│  └─ Difficulty: Easy to Medium
+│  └─ Total duration: 18+ hours
+├─ Resources: Comprehensive guides, courses, documentation (5 resources)
+├─ Daily Breakdown: 21 days of system exploitation progression
+│  └─ Days 1-7: Password cracking and initial access
+│  └─ Days 8-14: Linux privilege escalation techniques
+│  └─ Days 15-21: Windows privilege escalation methods
+└─ Outcome: System compromise and privilege escalation expertise
+
+PHASE 5: POST-EXPLOITATION & LATERAL MOVEMENT
+├─ Duration: 3 weeks (20-25 hrs/week)
+├─ Prerequisites: Phase 4 complete + System compromise skills
+├─ Tools: Meterpreter, PowerShell, Bloodhound, Kerberoasting (5 tools)
+├─ Labs: 4 hands-on labs (TryHackMe + HackTheBox)
+│  └─ Difficulty: Medium to Hard
+│  └─ Total duration: 16+ hours
+├─ Resources: Active Directory guides, courses, tools docs (5 resources)
+├─ Daily Breakdown: 21 days of post-exploitation progression
+│  └─ Days 1-7: Post-exploitation and persistence techniques
+│  └─ Days 8-14: Active Directory fundamentals and attacks
+│  └─ Days 15-21: Lateral movement and domain dominance
+└─ Outcome: Complete attack chain and enterprise network expertise
+
+PHASE 6: CERTIFICATION EXAM PREPARATION
+├─ Duration: 5 weeks (25-30 hrs/week)
+├─ Prerequisites: Phases 1-5 complete + 100+ hours of practice
+├─ Tools: All tools integrated from previous phases
+├─ Labs: 40+ practice machines (OffSec PG + HackTheBox)
+│  └─ Difficulty: Medium to Hard
+│  └─ Total duration: 100+ hours
+├─ Resources: Official course materials, practice exams (10+ resources)
+├─ Daily Breakdown: 35+ days of exam prep
+│  └─ Weeks 1-2: Complete 5-10 medium-level machines
+│  └─ Weeks 3-4: Complete 5-10 hard-level machines
+│  └─ Week 5: Full practice exams and final prep
+└─ Outcome: Fully prepared for certification exam
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📈 PROGRESSION LADDER
+═══════════════════════════════════════════════════════════════════════════════
+
+START (Basic knowledge)
+   ↓
+[PHASE 1] Learn tools (3 weeks)
+   ↓ prerequisites ✓
+[PHASE 2] Learn reconnaissance (3 weeks)
+   ↓ prerequisites ✓
+[PHASE 3] Learn web hacking (3 weeks)
+   ↓ prerequisites ✓
+[PHASE 4] Learn system hacking (3 weeks)
+   ↓ prerequisites ✓
+[PHASE 5] Learn AD & lateral movement (3 weeks)
+   ↓ prerequisites ✓
+[PHASE 6] Prepare for exam (5 weeks)
+   ↓ prerequisites ✓
+GOAL (Ready for certification)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 LEARNING STRUCTURE PER PHASE
+═══════════════════════════════════════════════════════════════════════════════
+
+Every phase includes:
+
+1. GOALS (4-5 specific learning objectives)
+   └─ What you will learn and master
+
+2. TOOLS (4-5 professional tools)
+   ├─ Tool name
+   ├─ Purpose (why you need it)
+   └─ Step-by-step learning path (exactly how to learn)
+
+3. RESOURCES (4-6 learning materials)
+   ├─ Type (YouTube, Book, Platform, Docs)
+   ├─ Name of resource
+   └─ Direct link to access
+
+4. HANDS-ON LABS (3-8 practical challenges)
+   ├─ Platform (TryHackMe, HackTheBox, PortSwigger)
+   ├─ Lab/Machine name
+   ├─ Difficulty level (color-coded)
+   └─ Duration estimate
+
+5. DAILY BREAKDOWN (21 items per 3-week phase)
+   ├─ Day 1-2: Specific activities
+   ├─ Day 3-4: Specific activities
+   ├─ Day 5-7: Specific activities
+   ├─ Day 8-14: Specific activities
+   └─ Day 15-21: Specific activities
+
+6. OUTCOME (Achievement statement)
+   ├─ What you'll be able to do
+   ├─ Skills you'll have
+   └─ Ready for next phase
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📊 STATISTICS
+═══════════════════════════════════════════════════════════════════════════════
+
+Total Duration:        16-20 weeks
+Total Hours:           200-250+ structured learning
+Total Phases:          6 comprehensive phases
+Total Tools:           24-30 different tools
+Total Labs:            65+ hands-on challenges
+Total Resources:       80+ learning materials
+Total Daily Items:     100+ specific activities
+Difficulty Levels:     4 (Beginner, Intermediate, Medium, Hard)
+Prerequisites:         Clear per phase
+Time Commitment:       15-30 hours per week (transparent)
+Real Platforms:        TryHackMe, HackTheBox, PortSwigger, OffSec
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎨 UI COMPONENTS PER PHASE
+═══════════════════════════════════════════════════════════════════════════════
+
+HEADER
+├─ Phase title with week range
+├─ Duration indicator (e.g., "3 weeks")
+└─ Visual accent
+
+INFO BAR
+├─ 📋 Prerequisite (what's needed to start)
+├─ ⏱️ Weekly hours (15-20, 18-22, etc)
+└─ Visual styling with left accent border
+
+GOALS SECTION
+├─ 🎯 Goals heading
+├─ Bulleted list (4-5 items)
+└─ Each item clearly states what to master
+
+TOOLS SECTION (NEW!)
+├─ 🛠️ Tools to Learn heading
+├─ Grid of tool cards (responsive, 3-4 per row)
+└─ Each card shows:
+   ├─ Tool name (bold, primary color)
+   ├─ Purpose (italic, gray)
+   └─ Step-by-step learning (accent background)
+
+RESOURCES SECTION
+├─ 📚 Resources heading
+├─ Table with columns:
+│  ├─ Type (badge colored)
+│  ├─ Name (text)
+│  └─ Link (clickable "View →")
+└─ 4-6 rows per phase
+
+LABS SECTION
+├─ 🎮 Hands-On Labs heading
+├─ Table with columns:
+│  ├─ Platform (badge)
+│  ├─ Lab/Machine name (text)
+│  ├─ Difficulty (color-coded badge)
+│  └─ Duration (time estimate)
+└─ 3-8 rows per phase
+
+DAILY BREAKDOWN SECTION (NEW!)
+├─ 📅 Daily/Weekly Breakdown heading
+├─ List of items:
+│  ├─ Each item starts with bullet (•)
+│  ├─ Shows day range (e.g., "Day 1-2:")
+│  ├─ Shows activity (e.g., "Linux installation")
+│  └─ Accent left border
+└─ 5-7 items per phase
+
+OUTCOME SECTION
+├─ ✅ Phase Outcome heading
+├─ Paragraph of achievement text
+├─ Green highlight background
+└─ Left accent border
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎨 COLORS & STYLING
+═══════════════════════════════════════════════════════════════════════════════
+
+DIFFICULTY BADGES
+├─ 🟢 Beginner     → Light green (#d4edda)
+├─ 🟡 Intermediate → Yellow (#fff3cd)
+├─ 🟡 Medium       → Yellow (#fff3cd)
+└─ 🔴 Hard         → Red (#f8d7da)
+
+ACCENT COLORS
+├─ Primary:   Blue (#0969da) - Links, selections
+├─ Accent:    Cream (#fffef0) - Backgrounds
+├─ Gray:      Dark gray (#57606a) - Text
+├─ White:     White (#ffffff) - Cards
+└─ Black:     Black (#000000) - Borders
+
+DARK MODE (OSCP Mode)
+├─ Background: Dark gray (#0d1117)
+├─ Cards:      Darker gray (#21262d)
+├─ Borders:    Light gray (#30363d)
+├─ Text:       Light (#e6edf3)
+├─ Primary:    Light blue (#58a6ff)
+└─ Accent:     Darker tones
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✨ INTERACTIVE FEATURES
+═══════════════════════════════════════════════════════════════════════════════
+
+KEYBOARD NAVIGATION (Certification Modal)
+├─ ↑ Arrow Key    → Move up in list
+├─ ↓ Arrow Key    → Move down in list
+├─ Enter Key      → Select certification
+└─ Esc Key        → Cancel modal
+
+HOVER EFFECTS
+├─ Tool cards     → Lift up (translateY -2px) with shadow
+├─ Buttons        → Color change or scale
+├─ Tables rows    → Light background highlight
+└─ Links          → Underline and color change
+
+ANIMATIONS
+├─ Modal fade-in/out
+├─ Phase blocks fade-up on scroll (AOS)
+├─ Smooth transitions on all interactive elements
+└─ 300ms default transition time
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📱 RESPONSIVE DESIGN
+═══════════════════════════════════════════════════════════════════════════════
+
+Desktop (1200px+)
+├─ Tool cards: 3-4 per row
+├─ Tables: Full width, horizontal scroll if needed
+└─ Sidebar: 25% of width
+
+Tablet (768px - 1199px)
+├─ Tool cards: 2 per row
+├─ Tables: Responsive, may stack
+└─ Single column layout
+
+Mobile (< 768px)
+├─ Tool cards: 1 per row (stack vertically)
+├─ Tables: Horizontal scroll
+├─ Full width content
+└─ Stacked sections
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🚀 IMPLEMENTATION STATUS
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ Backend
+  └─ PROMPTS.roadmap() generates 6-phase detailed JSON
+
+✅ Frontend
+  └─ displayRoadmap() renders all components with animations
+
+✅ Styling
+  └─ CSS classes for all sections with dark mode
+
+✅ Database
+  └─ Stores roadmap JSON for user tracking
+
+✅ Exports
+  └─ PDF generation with all content included
+
+✅ Mobile
+  └─ Responsive design for all devices
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎓 USER EXPERIENCE FLOW
+═══════════════════════════════════════════════════════════════════════════════
+
+1. User arrives at http://localhost:3000
+   └─ Sees welcome and "Start Assessment" button
+
+2. User takes assessment (10 questions)
+   └─ System evaluates answers
+
+3. User sees evaluation results
+   ├─ Current level (Beginner/Intermediate/Advanced)
+   ├─ Strengths (bulleted list)
+   ├─ Weaknesses to address (bulleted list)
+   └─ "Generate My Roadmap" button appears
+
+4. User clicks "Generate My Roadmap"
+   └─ Certification selection modal opens
+
+5. User selects certification (OSCP, OSEP, etc)
+   ├─ Uses arrow keys to navigate
+   ├─ Presses Enter to select
+   └─ Modal closes
+
+6. User sees beautiful 6-phase roadmap
+   ├─ Scrolls through all content
+   ├─ Reads tools, labs, daily breakdown
+   ├─ Understands complete learning path
+   └─ Sees clear progression
+
+7. User exports/downloads
+   ├─ Copy to clipboard
+   ├─ Export as JSON
+   ├─ Download as PDF
+   └─ Share with others
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✨ COMPLETE, DETAILED, READY FOR USE ✨

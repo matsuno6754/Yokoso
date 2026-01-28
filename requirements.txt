@@ -1,0 +1,4 @@
+# Core dependencies
+streamlit==1.31.0
+google-generativeai
+python-dotenv==1.0.1

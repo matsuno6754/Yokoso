@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<!-- DEPRECATED: Use index.html (merged production version). -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OffSec AI Mentor - Your Path to Mastery</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animations -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style-new.css">
+</head>
+<body>
+    <!-- Background Grid Effect -->
+    <div class="bg-grid"></div>
+    
+    <div class="app-container">
+        <!-- HERO SECTION -->
+        <section id="heroSection" class="hero-section">
+            <div class="hero-content" data-aos="fade-up">
+                <div class="hero-badge">
+                    <span class="badge-pulse"></span>
+                    AI-Powered Learning
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-line">OffSec</span>
+                    <span class="title-line title-highlight">AI Mentor</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Discover your security skills.<br>
+                    Build your path to mastery.
+                </p>
+                <button class="btn btn-primary btn-hero" id="startBtn">
+                    <span>Assess My Skill Level</span>
+                    <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <div class="hero-stats">
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="stat-number">6</div>
+                        <div class="stat-label">OffSec Certs</div>
+                    </div>
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                        <div class="stat-number">AI</div>
+                        <div class="stat-label">Powered</div>
+                    </div>
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Ethical</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ASSESSMENT SECTION -->
+        <section id="assessmentSection" class="section hidden">
+            <div class="section-container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Skill Assessment</h2>
+                    <p class="section-subtitle">Answer honestly. This helps us personalize your roadmap.</p>
+                </div>
+
+                <div class="assessment-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="questionCounter">Question 1 of 8</span>
+                        </div>
+                    </div>
+
+                    <div id="questionContainer" class="question-container"></div>
+
+                    <div class="assessment-actions">
+                        <button type="button" id="prevBtn" class="btn btn-secondary" style="display: none;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                            Previous
+                        </button>
+                        <button type="button" id="nextBtn" class="btn btn-primary">
+                            Next
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EVALUATION SECTION -->
+        <section id="evaluationSection" class="section hidden">
+            <div class="section-container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Your Skill Evaluation</h2>
+                    <p class="section-subtitle">Based on your assessment, here's where you stand.</p>
+                </div>
+
+                <div class="evaluation-grid">
+                    <div class="eval-card level-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card-icon">🎯</div>
+                        <h3 class="card-title">Current Level</h3>
+                        <div id="currentLevel" class="level-badge">Analyzing...</div>
+                        <p id="levelDescription" class="level-desc"></p>
+                    </div>
+
+                    <div class="eval-card strengths-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card-icon">💪</div>
+                        <h3 class="card-title">Your Strengths</h3>
+                        <ul id="strengthsList" class="skill-list"></ul>
+                    </div>
+
+                    <div class="eval-card weaknesses-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="card-icon">📈</div>
+                        <h3 class="card-title">Areas to Develop</h3>
+                        <ul id="weaknessesList" class="skill-list"></ul>
+                    </div>
+
+                    <div class="eval-card focus-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="card-icon">🎓</div>
+                        <h3 class="card-title">Your Focus</h3>
+                        <p id="focusSuggestion" class="focus-text"></p>
+                    </div>
+                </div>
+
+                <div class="section-actions" data-aos="fade-up" data-aos-delay="500">
+                    <button class="btn btn-primary btn-large" id="selectCertBtn">
+                        Choose Your Certification
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CERTIFICATION SECTION -->
+        <section id="certSection" class="section hidden">
+            <div class="section-container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Select Your Target Certification</h2>
+                    <p class="section-subtitle">Which OffSec cert aligns with your goals?</p>
+                </div>
+
+                <div id="certGrid" class="cert-grid"></div>
+
+                <div class="cert-note" data-aos="fade-up">
+                    <p>💡 Don't know which cert? Our mentor can help after we build your roadmap.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROADMAP SECTION -->
+        <section id="roadmapSection" class="section hidden">
+            <div class="section-container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Your Personalized Roadmap</h2>
+                    <p class="section-subtitle">A phase-based path aligned with <span id="selectedCertDisplay" class="cert-highlight"></span></p>
+                </div>
+
+                <div class="roadmap-card" data-aos="fade-up" data-aos-delay="100">
+                    <div id="roadmapContent" class="roadmap-content"></div>
+                </div>
+
+                <div class="roadmap-actions" data-aos="fade-up" data-aos-delay="200">
+                    <button class="btn btn-secondary" id="copyRoadmapBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                        Copy Roadmap
+                    </button>
+                    <button class="btn btn-secondary" id="exportRoadmapBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                        </svg>
+                        Export as Text
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MENTOR CHAT SECTION -->
+        <section id="mentorSection" class="section hidden">
+            <div class="section-container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Guided Mentor Chat</h2>
+                    <p class="section-subtitle">Let's talk about your learning journey and goals.</p>
+                </div>
+
+                <div class="chat-card" data-aos="fade-up" data-aos-delay="100">
+                    <div id="chatHistory" class="chat-history"></div>
+
+                    <div class="chat-intents">
+                        <div class="intent-label">Quick Topics:</div>
+                        <div id="mentorIntentButtons" class="intent-buttons">
+                            <button class="btn-intent" data-intent="goals">💼 Career Goals</button>
+                            <button class="btn-intent" data-intent="choose">🎯 Choose Certs</button>
+                            <button class="btn-intent" data-intent="stuck">🤔 Feeling Stuck</button>
+                            <button class="btn-intent" data-intent="time">⏱️ Study Tips</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <input 
+                            type="text" 
+                            id="mentorInput" 
+                            class="chat-input" 
+                            placeholder="Add context (optional)..."
+                        >
+                        <button class="btn btn-primary btn-send" id="sendMentorBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="chat-disclaimer">
+                        <strong>Note:</strong> Your mentor discusses learning strategy and mindset, not technical attack methods.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACTIONS SECTION -->
+        <section id="actionsSection" class="section hidden">
+            <div class="section-container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">What's Next?</h2>
+                </div>
+
+                <div class="actions-grid" data-aos="fade-up" data-aos-delay="100">
+                    <button class="btn btn-primary btn-large" id="retakeBtn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                        </svg>
+                        Retake Assessment (New Questions)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="disclaimer-card" data-aos="fade-up">
+                    <div class="disclaimer-icon">⚠️</div>
+                    <h3>Ethical Disclaimer</h3>
+                    <p>
+                        <strong>OffSec AI Mentor is an educational guidance tool only.</strong> 
+                        We provide learning direction and skill assessments, not hacking instructions, exploits, or attack techniques. 
+                        All offensive security learning must be ethical, legal, and conducted in authorized environments only.
+                    </p>
+                    <p>
+                        <strong>No certification guarantees:</strong> This roadmap increases your readiness for OffSec certifications, 
+                        but success depends on your commitment and practice.
+                    </p>
+                </div>
+
+                <div class="footer-meta">
+                    <p>&copy; 2026 OffSec AI Mentor. Built with educational integrity.</p>
+                    <p>Powered by <strong>Google Gemini 2.5 Flash</strong> | Designed for the <strong>OffSec Community</strong></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Processing...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="app-new.js"></script>
+</body>
+</html>

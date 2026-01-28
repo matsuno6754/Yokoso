@@ -1,0 +1,459 @@
+OffSec AI Mentor
+================
+
+Project Structure:
+==================
+
+📁 OffSec-AI-Mentor/
+│
+├── 🚀 START HERE
+│   ├── start.sh                 ← Run this to begin!
+│   ├── QUICK_REFERENCE.md       ← Quick commands & tips
+│   └── README.md                ← Full documentation
+│
+├── 💻 APPLICATION FILES
+│   ├── app.py                   ← Main Streamlit application (430+ lines)
+│   ├── prompts.py               ← AI prompts with ethical constraints (180+ lines)
+│   └── requirements.txt         ← Python dependencies
+│
+├── ⚙️ CONFIGURATION
+│   ├── .env.example             ← Template for API key
+│   ├── .env                     ← Your actual API key (create this!)
+│   └── .gitignore              ← Protects sensitive files
+│
+└── 📚 DOCUMENTATION
+    ├── README.md                ← Complete project documentation
+    ├── USAGE_GUIDE.md           ← Detailed user manual
+    ├── PROJECT_OVERVIEW.md      ← Technical deep-dive
+    ├── CONTRIBUTING.md          ← Developer guide
+    └── QUICK_REFERENCE.md       ← Quick reference card
+
+
+Application Architecture:
+=========================
+
+┌─────────────────────────────────────────────────────────────┐
+│                        STREAMLIT UI                          │
+│  ┌────────┬────────┬────────┬────────┐                     │
+│  │ Skill  │Learning│Enumera-│ Report │                     │
+│  │Assess. │Roadmap │tion    │ Helper │                     │
+│  └────────┴────────┴────────┴────────┘                     │
+│                        ↕                                     │
+│                   app.py                                     │
+│            (Session Management)                              │
+│                        ↕                                     │
+│              OpenAI API Integration                          │
+│                   ↓        ↓                                │
+│           prompts.py    User Input                          │
+│         (Ethical Rules)                                      │
+│                        ↓                                     │
+│                   OpenAI API                                │
+│                   (GPT-4 / GPT-3.5)                         │
+│                        ↓                                     │
+│               AI-Generated Response                          │
+│                        ↓                                     │
+│                Display to User                              │
+└─────────────────────────────────────────────────────────────┘
+
+
+Feature Flow Diagrams:
+=====================
+
+1. SKILL ASSESSMENT (🎯)
+   ┌──────────────┐
+   │ Start Button │
+   └──────┬───────┘
+          ↓
+   ┌──────────────────┐
+   │ AI asks question │
+   └──────┬───────────┘
+          ↓
+   ┌──────────────┐
+   │ User answers │
+   └──────┬───────┘
+          ↓
+   ┌────────────────────┐
+   │ Store in session   │
+   └──────┬─────────────┘
+          ↓
+   ┌──────────────────┐
+   │ AI asks follow-up│ ← Loop ~10 times
+   └──────┬───────────┘
+          ↓
+   ┌───────────────────┐
+   │ Assessment Results│
+   └───────────────────┘
+
+
+2. LEARNING ROADMAP (🗺️)
+   ┌──────────────────┐
+   │ Assessment Done? │
+   └──────┬───────────┘
+          ↓ YES
+   ┌─────────────────┐
+   │ Generate Button │
+   └──────┬──────────┘
+          ↓
+   ┌──────────────────────────┐
+   │ AI analyzes weaknesses   │
+   └──────┬───────────────────┘
+          ↓
+   ┌────────────────────┐
+   │ Personalized Plan  │
+   │ - Topics           │
+   │ - Tools            │
+   │ - Timeline         │
+   │ - Resources        │
+   └────────────────────┘
+
+
+3. ENUMERATION COACH (🔍)
+   ┌────────────────┐
+   │ Paste Scan     │
+   │ (Nmap, etc.)   │
+   └──────┬─────────┘
+          ↓
+   ┌────────────────┐
+   │ Add Context    │
+   │ (optional)     │
+   └──────┬─────────┘
+          ↓
+   ┌────────────────┐
+   │ Analyze Button │
+   └──────┬─────────┘
+          ↓
+   ┌──────────────────────┐
+   │ AI explains:         │
+   │ - What services mean │
+   │ - What to enum next  │
+   │ - Why it matters     │
+   │ - Methodology        │
+   └──────────────────────┘
+
+
+4. REPORT HELPER (📝)
+   ┌───────────────┐
+   │ Finding Title │
+   └──────┬────────┘
+          ↓
+   ┌──────────────────┐
+   │ Technical Details│
+   └──────┬───────────┘
+          ↓
+   ┌─────────────────┐
+   │ Severity & Type │
+   └──────┬──────────┘
+          ↓
+   ┌────────────────┐
+   │ Generate Button│
+   └──────┬─────────┘
+          ↓
+   ┌────────────────────────┐
+   │ Professional Report:   │
+   │ - Executive Summary    │
+   │ - Technical Desc.      │
+   │ - Risk Assessment      │
+   │ - Remediation          │
+   └────────────────────────┘
+
+
+Data Flow:
+==========
+
+User Input → Streamlit Interface → app.py
+                                      ↓
+                              Session State Check
+                                      ↓
+                              Get Appropriate Prompt
+                                      ↓
+                              prompts.py (with ethical rules)
+                                      ↓
+                              Construct API Request
+                                      ↓
+                              OpenAI API Call
+                                      ↓
+                              Receive Response
+                                      ↓
+                              Save to Session
+                                      ↓
+                              Display to User
+
+
+File Dependencies:
+==================
+
+app.py
+  ├── imports: streamlit, openai, os, dotenv
+  ├── calls: prompts.get_prompt()
+  └── reads: .env (OPENAI_API_KEY, OPENAI_MODEL)
+
+prompts.py
+  ├── defines: All system prompts
+  └── exports: get_prompt() function
+
+requirements.txt
+  ├── streamlit==1.31.0
+  ├── openai==1.12.0
+  └── python-dotenv==1.0.1
+
+.env (create from .env.example)
+  ├── OPENAI_API_KEY=sk-...
+  └── OPENAI_MODEL=gpt-4
+
+
+Setup Process:
+==============
+
+1. Prerequisites Check
+   ├── Python 3.8+ installed? ✓
+   └── Internet connection? ✓
+
+2. Installation
+   ├── Clone/download repository
+   ├── Create virtual environment
+   ├── Install dependencies
+   └── Configure .env file
+
+3. API Setup
+   ├── Get OpenAI API key
+   ├── Copy .env.example → .env
+   └── Add API key to .env
+
+4. Launch
+   └── Run: streamlit run app.py
+
+
+Key Functions Explained:
+========================
+
+app.py:
+-------
+initialize_session_state()
+  └── Sets up conversation memory
+
+call_openai(system_prompt, user_message, history)
+  ├── Builds message array
+  ├── Calls OpenAI API
+  ├── Handles errors
+  └── Returns AI response
+
+render_sidebar()
+  ├── Shows learning mode selector
+  ├── Displays API status
+  └── Shows ethical warning
+
+skill_assessment_tab()
+  ├── Manages assessment conversation
+  ├── Stores Q&A in session
+  └── Detects completion
+
+learning_roadmap_tab()
+  ├── Checks for assessment
+  ├── Generates roadmap
+  └── Displays results
+
+enumeration_coach_tab()
+  ├── Accepts scan input
+  ├── Analyzes with AI
+  └── Explains methodology
+
+report_helper_tab()
+  ├── Collects finding details
+  ├── Formats with AI
+  └── Generates report section
+
+
+prompts.py:
+-----------
+get_prompt(feature, learning_mode)
+  ├── Selects base prompt
+  ├── Adds learning mode modifier
+  └── Returns complete system prompt
+
+BASE_SYSTEM_PROMPT
+  └── Core ethical rules for ALL features
+
+SKILL_ASSESSMENT_PROMPT
+  └── How to conduct assessment
+
+LEARNING_ROADMAP_PROMPT
+  └── How to create roadmaps
+
+ENUMERATION_COACH_PROMPT
+  └── How to teach enumeration
+
+REPORT_HELPER_PROMPT
+  └── How to format reports
+
+LEARNING_MODES
+  └── Beginner / OSCP / Red Team modifiers
+
+
+Cost Breakdown:
+===============
+
+OpenAI API Pricing (approximate):
+---------------------------------
+GPT-3.5 Turbo:
+  Input:  $0.0005 per 1K tokens
+  Output: $0.0015 per 1K tokens
+  Session: ~$0.01-0.05
+
+GPT-4:
+  Input:  $0.01 per 1K tokens
+  Output: $0.03 per 1K tokens
+  Session: ~$0.20-1.00
+
+Monthly Estimates:
+-----------------
+Light Use (10 sessions):      $1-5
+Moderate Use (50 sessions):   $5-25
+Heavy Use (200 sessions):     $20-100
+
+
+Security Considerations:
+========================
+
+Protected:
+  ✓ API key in .env (not in git)
+  ✓ No persistent data storage
+  ✓ Session data cleared on exit
+  ✓ Ethical constraints in prompts
+
+Exposed:
+  ⚠ Messages sent to OpenAI
+  ⚠ Scan data in API calls
+
+Best Practices:
+  ✓ Use lab/practice environments only
+  ✓ Don't paste real credentials
+  ✓ Review OpenAI privacy policy
+  ✓ Don't deploy publicly without auth
+
+
+Troubleshooting Map:
+====================
+
+Error: "API Authentication Error"
+  ├── Check .env exists
+  ├── Verify API key format (sk-...)
+  └── Check for typos/spaces
+
+Error: "Module not found"
+  ├── Activate venv
+  └── pip install -r requirements.txt
+
+Error: "Address already in use"
+  └── streamlit run app.py --server.port 8502
+
+Issue: Slow responses
+  ├── Normal for GPT-4
+  └── Switch to GPT-3.5 in .env
+
+Issue: No response
+  ├── Check internet connection
+  ├── Verify API key has credits
+  └── Check OpenAI status page
+
+
+Development Workflow:
+=====================
+
+1. Modify Code
+   ├── Edit app.py or prompts.py
+   └── Save changes
+
+2. Test Locally
+   ├── Streamlit auto-reloads
+   └── Test feature manually
+
+3. Debug
+   ├── Check terminal for errors
+   └── Use Streamlit debugging
+
+4. Commit
+   ├── Git add/commit
+   └── Push to repository
+
+
+Customization Points:
+=====================
+
+Easy:
+  ├── Change learning mode descriptions
+  ├── Modify CSS styling
+  ├── Add new example data
+  └── Update documentation
+
+Medium:
+  ├── Add new prompts
+  ├── Modify AI behavior
+  ├── Add new input fields
+  └── Change UI layout
+
+Advanced:
+  ├── Add new features/tabs
+  ├── Integrate external APIs
+  ├── Add database storage
+  └── Implement authentication
+
+
+Next Steps for You:
+===================
+
+1. ✓ Project created and documented
+2. → Set up your environment:
+     ./start.sh
+3. → Add your OpenAI API key
+4. → Test all four features
+5. → Read USAGE_GUIDE.md
+6. → Practice with real scenarios
+7. → Customize for your needs
+8. → Share with community!
+
+
+Quick Commands:
+===============
+
+# Setup
+./start.sh
+
+# Manual setup
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+streamlit run app.py
+
+# Check files
+ls -la
+cat .env.example
+cat QUICK_REFERENCE.md
+
+# Test
+python3 -m py_compile app.py prompts.py
+
+
+Documentation Map:
+==================
+
+Start Here → README.md
+Need Help → USAGE_GUIDE.md
+Technical → PROJECT_OVERVIEW.md
+Quick Ref → QUICK_REFERENCE.md
+Want to Contribute → CONTRIBUTING.md
+
+
+═══════════════════════════════════════════════════════════════
+
+  🎓 OffSec AI Mentor - Ready to Deploy! 🎓
+
+  Your ethical, educational penetration testing mentor
+  is ready to help aspiring security professionals learn
+  methodology, reasoning, and professional skills.
+
+  Remember: This tool teaches thinking, not hacking.
+  Real skill comes from practice and persistence.
+
+  Happy learning! 🔒
+
+═══════════════════════════════════════════════════════════════
