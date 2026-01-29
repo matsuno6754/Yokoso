@@ -393,7 +393,15 @@ function setupAuthListeners() {
                 body: JSON.stringify({ emailOrUsername, password })
             });
             
-            const data = await response.json();
+            const text = await response.text();
+            
+            // Check if response is HTML instead of JSON
+            if (text.trim().startsWith('<')) {
+                console.error('🚨 ROUTING ERROR: /api/login returned HTML instead of JSON!');
+                throw new Error('Server routing error. Please contact support.');
+            }
+            
+            const data = JSON.parse(text);
             
             if (!response.ok) {
                 throw new Error(data.error || 'Login failed');
@@ -434,7 +442,15 @@ function setupAuthListeners() {
                 body: JSON.stringify({ email, username, password })
             });
             
-            const data = await response.json();
+            const text = await response.text();
+            
+            // Check if response is HTML instead of JSON
+            if (text.trim().startsWith('<')) {
+                console.error('🚨 ROUTING ERROR: /api/register returned HTML instead of JSON!');
+                throw new Error('Server routing error. Please contact support.');
+            }
+            
+            const data = JSON.parse(text);
             
             if (!response.ok) {
                 throw new Error(data.error || 'Registration failed');
@@ -510,8 +526,17 @@ async function checkExistingSession() {
             headers: { 'Authorization': `Bearer ${sessionId}` }
         });
         
+        const text = await response.text();
+        
         if (response.ok) {
-            const data = await response.json();
+            // Check if response is HTML instead of JSON
+            if (text.trim().startsWith('<')) {
+                console.error('🚨 ROUTING ERROR: /api/me returned HTML instead of JSON!');
+                localStorage.removeItem('sessionId');
+                return;
+            }
+            
+            const data = JSON.parse(text);
             appState.sessionId = sessionId;
             appState.user = data.user;
             updateAuthUI();
@@ -965,6 +990,15 @@ async function callBackendAPI(endpoint, data = {}) {
         // Debug: log raw response before parsing JSON
         const text = await response.text();
         console.log(`📄 Raw response from ${endpoint}:`, text.substring(0, 200));
+
+        // CRITICAL: Check if response is HTML instead of JSON
+        if (text.trim().startsWith('<')) {
+            console.error('🚨 ROUTING ERROR: Received HTML instead of JSON!');
+            console.error('   Endpoint:', endpoint);
+            console.error('   This means the API route is not properly configured.');
+            console.error('   Expected JSON but got HTML. First 500 chars:', text.substring(0, 500));
+            throw new Error(`API routing error: Received HTML instead of JSON from ${endpoint}. Please check server routing configuration.`);
+        }
 
         // Check response status before parsing JSON
         if (!response.ok) {
