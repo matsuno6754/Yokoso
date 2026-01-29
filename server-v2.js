@@ -124,7 +124,6 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
 
 // Request logging
 app.use((req, res, next) => {
@@ -1197,6 +1196,9 @@ app.get('/api/health', (req, res) => {
         timestamp: new Date().toISOString()
     });
 });
+
+// Serve static files (CSS, images, etc.) 
+app.use(express.static(path.join(__dirname)));
 
 // SPA fallback
 app.get('*', (req, res) => {
