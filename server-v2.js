@@ -102,15 +102,23 @@ if (GROQ_API_KEY) {
     AI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
     console.log('✅ Using Google Gemini API (2.5 Flash)');
 } else {
-    console.error('❌ ERROR: No AI API key found!');
-    console.error('   Please set one of: GROQ_API_KEY, OPENAI_API_KEY, or GEMINI_API_KEY in your .env file');
-    console.error('');
-    console.error('   💡 TIP: Groq offers a FREE API key with generous limits:');
-    console.error('      1. Go to https://console.groq.com');
-    console.error('      2. Sign up and get a free API key');
-    console.error('      3. Add GROQ_API_KEY=your_key to your .env file');
-    process.exit(1);
+    AI_PROVIDER = 'none';
+    AI_API_KEY = '';
+    console.warn('⚠️  WARNING: No AI API key found!');
+    console.warn('   Assessment will use fallback questions only.');
+    console.warn('   Roadmap generation will NOT be available.');
+    console.warn('');
+    console.warn('   💡 TIP: Get a FREE Groq API key:');
+    console.warn('      1. Go to https://console.groq.com');
+    console.warn('      2. Sign up and get a free API key');
+    console.warn('      3. Add GROQ_API_KEY=your_key to your .env file');
+    console.warn('');
 }
+
+if (AI_PROVIDER !== 'none') {
+    console.log('✅ API key loaded successfully');
+}
+
 
 // ============================================================================
 // MIDDLEWARE
@@ -1011,6 +1019,14 @@ app.post('/api/evaluate-assessment', async (req, res) => {
 app.post('/api/generate-roadmap', async (req, res) => {
     console.log('\n🗺️ POST /api/generate-roadmap');
     
+    // Check if AI API is available
+    if (AI_PROVIDER === 'none') {
+        return res.status(503).json({ 
+            error: 'AI service not available. Please configure an API key.',
+            userMessage: 'Roadmap generation requires AI. Please contact the administrator to configure an API key.'
+        });
+    }
+    
     try {
         const { level, weaknesses, cert } = req.body;
         
@@ -1265,13 +1281,13 @@ app.get('*', (req, res) => {
 // START SERVER
 // ============================================================================
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log('');
     console.log('╔════════════════════════════════════════════════════════════════╗');
     console.log('║                                                                ║');
     console.log('║   🎓 OffSec AI Mentor v2.0 - Backend Server                    ║');
     console.log('║                                                                ║');
-    console.log(`║   🚀 Server running on http://localhost:${PORT}                  ║`);
+    console.log(`║   🚀 Server running on http://0.0.0.0:${PORT}                    ║`);
     console.log('║                                                                ║');
     console.log('║   New Features:                                                ║');
     console.log('║   • User authentication & sessions                            ║');
