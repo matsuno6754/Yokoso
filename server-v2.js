@@ -112,6 +112,9 @@ if (GROQ_API_KEY) {
     process.exit(1);
 }
 
+console.log('✅ API key loaded successfully');
+
+
 // ============================================================================
 // MIDDLEWARE
 // ============================================================================
@@ -1265,13 +1268,13 @@ app.get('*', (req, res) => {
 // START SERVER
 // ============================================================================
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log('');
     console.log('╔════════════════════════════════════════════════════════════════╗');
     console.log('║                                                                ║');
     console.log('║   🎓 OffSec AI Mentor v2.0 - Backend Server                    ║');
     console.log('║                                                                ║');
-    console.log(`║   🚀 Server running on http://localhost:${PORT}                  ║`);
+    console.log(`║   🚀 Server running on http://0.0.0.0:${PORT}                    ║`);
     console.log('║                                                                ║');
     console.log('║   New Features:                                                ║');
     console.log('║   • User authentication & sessions                            ║');

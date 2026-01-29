@@ -393,7 +393,7 @@ function setupAuthListeners() {
                 body: JSON.stringify({ emailOrUsername, password })
             });
             
-            const data = await response.json();
+            const data = await safeResponseJSON(response, '/api/login');
             
             if (!response.ok) {
                 throw new Error(data.error || 'Login failed');
@@ -434,7 +434,7 @@ function setupAuthListeners() {
                 body: JSON.stringify({ email, username, password })
             });
             
-            const data = await response.json();
+            const data = await safeResponseJSON(response, '/api/register');
             
             if (!response.ok) {
                 throw new Error(data.error || 'Registration failed');
@@ -511,7 +511,7 @@ async function checkExistingSession() {
         });
         
         if (response.ok) {
-            const data = await response.json();
+            const data = await safeResponseJSON(response, '/api/me');
             appState.sessionId = sessionId;
             appState.user = data.user;
             updateAuthUI();
@@ -938,6 +938,35 @@ function toggleLearningMode() {
 // ============================================================================
 
 /**
+ * Safely parse JSON from response with HTML detection
+ * @param {Response} response - Fetch response object
+ * @param {string} endpoint - Endpoint name for logging
+ * @returns {Promise<object>} - Parsed JSON data
+ */
+async function safeResponseJSON(response, endpoint) {
+    const text = await response.text();
+    console.log(`📄 Raw response from ${endpoint}:`, text.substring(0, 200));
+    
+    // CRITICAL: Check if response is HTML instead of JSON
+    if (text.trim().startsWith('<')) {
+        console.error(`❌ ROUTING ERROR: Received HTML instead of JSON from ${endpoint}`);
+        console.error(`   This means the API route is not working correctly.`);
+        console.error(`   Frontend called: ${endpoint}`);
+        console.error(`   Response starts with: ${text.substring(0, 100)}`);
+        throw new Error(`Routing error: API endpoint ${endpoint} returned HTML instead of JSON. Check backend API routes.`);
+    }
+    
+    // Parse JSON from text
+    try {
+        return JSON.parse(text);
+    } catch (parseError) {
+        console.error(`❌ JSON Parse Error on ${endpoint}:`, parseError.message);
+        console.error(`   Raw text:`, text);
+        throw new Error(`Invalid JSON response from ${endpoint}: ${parseError.message}`);
+    }
+}
+
+/**
  * Call backend API endpoint
  * @param {string} endpoint - API endpoint (e.g., '/api/generate-questions')
  * @param {object} data - Request body data
@@ -962,24 +991,13 @@ async function callBackendAPI(endpoint, data = {}) {
             body: JSON.stringify(data)
         });
 
-        // Debug: log raw response before parsing JSON
-        const text = await response.text();
-        console.log(`📄 Raw response from ${endpoint}:`, text.substring(0, 200));
-
-        // Check response status before parsing JSON
+        // Use safe JSON parsing with HTML detection
+        const result = await safeResponseJSON(response, endpoint);
+        
+        // Check response status after parsing
         if (!response.ok) {
-            console.error(`❌ API Error (${response.status}):`, text);
-            throw new Error(`API request failed with status ${response.status}`);
-        }
-
-        // Parse JSON from text
-        let result;
-        try {
-            result = JSON.parse(text);
-        } catch (parseError) {
-            console.error(`❌ JSON Parse Error on ${endpoint}:`, parseError.message);
-            console.error(`   Raw text:`, text);
-            throw new Error(`Invalid JSON response from ${endpoint}: ${parseError.message}`);
+            console.error(`❌ API Error (${response.status}):`, result);
+            throw new Error(result.error || `API request failed with status ${response.status}`);
         }
 
         console.log(`✅ ${endpoint} successful`);
@@ -2429,146 +2447,6 @@ function displayRoadmap(roadmapData) {
             </div>
         `;
         elements.roadmapContent.appendChild(motivationSection);
-    }
-}
-        phaseBlock.className = 'phase-block';
-        phaseBlock.setAttribute('data-aos', 'fade-up');
-        phaseBlock.setAttribute('data-aos-delay', idx * 100);
-        
-        let phaseHTML = `
-            <div class="phase-header-content">
-                <h2>${phase.phase}</h2>
-                <span class="phase-duration">⏱️ ${phase.duration}</span>
-            </div>
-        `;
-        
-        // Prerequisites and hours info
-        if (phase.prerequisites || phase.weeklyHours) {
-            phaseHTML += `<div class="phase-info-bar">`;
-            if (phase.prerequisites) {
-                phaseHTML += `<span class="info-badge">📋 Prerequisite: ${phase.prerequisites}</span>`;
-            }
-            if (phase.weeklyHours) {
-                phaseHTML += `<span class="info-badge">⏱️ ${phase.weeklyHours}</span>`;
-            }
-            phaseHTML += `</div>`;
-        }
-        
-        // Goals section
-        if (phase.goals && phase.goals.length > 0) {
-            phaseHTML += `
-                <div class="phase-section">
-                    <h3>🎯 Goals</h3>
-                    <ul class="goals-list">
-                        ${phase.goals.map(goal => `<li>${goal}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-        }
-        
-        // Tools to learn
-        if (phase.tools && phase.tools.length > 0) {
-            phaseHTML += `
-                <div class="phase-section">
-                    <h3>🛠️ Tools to Learn</h3>
-                    <div class="tools-container">
-                        ${phase.tools.map(tool => `
-                            <div class="tool-card">
-                                <div class="tool-name"><strong>${tool.name}</strong></div>
-                                <div class="tool-purpose"><em>Purpose:</em> ${tool.purpose}</div>
-                                <div class="tool-steps"><em>Steps:</em> ${tool.step}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Resources section
-        if (phase.resources && phase.resources.length > 0) {
-            phaseHTML += `
-                <div class="phase-section">
-                    <h3>📚 Resources</h3>
-                    <table class="phase-table resources-table">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Name</th>
-                                <th>Link</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${phase.resources.map(res => `
-                                <tr>
-                                    <td><span class="badge">${res.type}</span></td>
-                                    <td>${res.name}</td>
-                                    <td><a href="${res.link}" target="_blank" rel="noopener">Visit →</a></td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-        }
-        
-        // Labs section with difficulty and duration
-        if (phase.labs && phase.labs.length > 0) {
-            phaseHTML += `
-                <div class="phase-section">
-                    <h3>🎮 Hands-On Labs</h3>
-                    <table class="phase-table labs-table">
-                        <thead>
-                            <tr>
-                                <th>Platform</th>
-                                <th>Lab/Machine</th>
-                                ${phase.labs[0].difficulty ? '<th>Difficulty</th>' : ''}
-                                ${phase.labs[0].duration ? '<th>Duration</th>' : ''}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${phase.labs.map(lab => `
-                                <tr>
-                                    <td><strong>${lab.platform}</strong></td>
-                                    <td>${lab.lab}</td>
-                                    ${lab.difficulty ? `<td><span class="difficulty-badge difficulty-${lab.difficulty.toLowerCase()}">${lab.difficulty}</span></td>` : ''}
-                                    ${lab.duration ? `<td>${lab.duration}</td>` : ''}
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-        }
-        
-        // Daily/Weekly breakdown
-        if (phase.dailyBreakdown && phase.dailyBreakdown.length > 0) {
-            phaseHTML += `
-                <div class="phase-section">
-                    <h3>📅 Daily/Weekly Breakdown</h3>
-                    <div class="breakdown-list">
-                        ${phase.dailyBreakdown.map(item => `<div class="breakdown-item">• ${item}</div>`).join('')}
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Outcome section
-        if (phase.outcome) {
-            phaseHTML += `
-                <div class="phase-section outcome">
-                    <h3>✅ Outcome</h3>
-                    <p>${phase.outcome}</p>
-                </div>
-            `;
-        }
-        
-        phaseBlock.innerHTML = phaseHTML;
-        elements.roadmapContent.appendChild(phaseBlock);
-    });
-    
-    // Trigger animations
-    if (typeof AOS !== 'undefined') {
-        AOS.refresh();
     }
 }
 
