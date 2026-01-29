@@ -994,13 +994,13 @@ app.post('/api/evaluate-assessment', async (req, res) => {
         // Return a basic assessment based on answer count
         const answerCount = Object.keys(req.body.answers || {}).length;
         const questionCount = (req.body.questions || []).length;
-        const basicScore = Math.round((answerCount / questionCount) * 100) || 50;
+        const basicScore = questionCount > 0 ? Math.round((answerCount / questionCount) * 100) : 50;
         
         let skillLevel = 'Beginner';
         if (basicScore >= 70) skillLevel = 'Intermediate';
         if (basicScore >= 85) skillLevel = 'Advanced';
         
-        console.log('⚠️  Returning fallback assessment due to error');
+        console.warn('⚠️  Returning fallback assessment due to error');
         return res.status(200).json({
             level: skillLevel,
             skillLevel: skillLevel,
