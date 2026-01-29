@@ -74,6 +74,7 @@ if (GROQ_API_KEY) {
         FALLBACK_MODEL = process.env.OPENAI_MODEL || 'gpt-3.5-turbo';
         FALLBACK_API_URL = 'https://api.openai.com/v1/chat/completions';
         console.log('✅ Fallback 1: OpenAI API (' + FALLBACK_MODEL + ')');
+        console.log('✅ Fallback API key loaded successfully');
         
         // Third fallback: Deepseek
         if (DEEPSEEK_API_KEY) {
@@ -82,6 +83,7 @@ if (GROQ_API_KEY) {
             FALLBACK2_MODEL = 'deepseek-chat';
             FALLBACK2_API_URL = 'https://api.deepseek.com/chat/completions';
             console.log('✅ Fallback 2: Deepseek API (deepseek-chat)');
+            console.log('✅ Fallback 2 API key loaded successfully');
         }
     } else if (DEEPSEEK_API_KEY) {
         FALLBACK_PROVIDER = 'deepseek';
@@ -89,6 +91,7 @@ if (GROQ_API_KEY) {
         FALLBACK_MODEL = 'deepseek-chat';
         FALLBACK_API_URL = 'https://api.deepseek.com/chat/completions';
         console.log('✅ Fallback: Deepseek API (deepseek-chat)');
+        console.log('✅ Fallback API key loaded successfully');
     }
 } else if (OPENAI_API_KEY) {
     AI_PROVIDER = 'openai';
@@ -946,6 +949,15 @@ app.post('/api/generate-questions', async (req, res) => {
 app.post('/api/evaluate-assessment', async (req, res) => {
     console.log('\n📊 POST /api/evaluate-assessment');
     
+    // Define fallback evaluation at function scope
+    const FALLBACK_EVALUATION = {
+        level: 'Beginner',
+        score: 50,
+        strengths: ['Eager to learn', 'Taking initiative', 'Starting your security journey'],
+        weaknesses: ['Needs more practice with fundamentals', 'Continue exploring security concepts', 'Build hands-on lab experience'],
+        focusSuggestion: 'Focus on building strong Linux and networking fundamentals. Start with TryHackMe\'s beginner path and practice daily.'
+    };
+    
     try {
         const { answers, questions, mode } = req.body;
         
@@ -988,34 +1000,27 @@ app.post('/api/evaluate-assessment', async (req, res) => {
             console.log('✅ Evaluation complete - Level:', parsed.level, '- Score:', parsed.score);
             return res.json(parsed);
         } catch (aiError) {
+            // Check if it's a rate limit error
+            const isRateLimit = aiError.message.toLowerCase().includes('rate limit');
+            if (isRateLimit) {
+                console.log('⚠️  AI rate limited, returning fallback evaluation');
+                // Return fallback evaluation with 200 status (not an error from user perspective)
+                return res.status(200).json(FALLBACK_EVALUATION);
+            }
+            
+            // For other AI failures, use fallback silently
             console.log('⚠️  AI evaluation failed, using fallback evaluation silently');
             console.log('   Error was:', aiError.message);
-            
-            // Return fallback evaluation
-            const fallbackEvaluation = {
-                skillLevel: 'Beginner',
-                strengths: ['Eager to learn', 'Taking initiative'],
-                weaknesses: ['Needs more practice with fundamentals', 'Continue exploring security concepts'],
-                score: 50
-            };
-            
             console.log('✅ Returning fallback evaluation');
-            return res.json(fallbackEvaluation);
+            return res.json(FALLBACK_EVALUATION);
         }
     } catch (error) {
         console.error('❌ Unexpected error in evaluate-assessment:', error.message);
         console.error('Stack:', error.stack);
         
         // Return fallback evaluation to avoid user-facing errors
-        const fallbackEvaluation = {
-            skillLevel: 'Beginner',
-            strengths: ['Eager to learn', 'Taking initiative'],
-            weaknesses: ['Needs more practice with fundamentals', 'Continue exploring security concepts'],
-            score: 50
-        };
-        
         console.log('✅ Returning fallback evaluation due to unexpected error');
-        return res.json(fallbackEvaluation);
+        return res.json(FALLBACK_EVALUATION);
     }
 });
 
