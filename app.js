@@ -966,6 +966,15 @@ async function callBackendAPI(endpoint, data = {}) {
         const text = await response.text();
         console.log(`📄 Raw response from ${endpoint}:`, text.substring(0, 200));
 
+        // SAFETY CHECK: Detect if response is HTML instead of JSON
+        if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
+            console.error('🚨 ROUTING ERROR: API returned HTML instead of JSON!');
+            console.error(`   Endpoint: ${endpoint}`);
+            console.error(`   This means the API route is missing or misconfigured on the server.`);
+            console.error(`   The catch-all route returned index.html instead of JSON.`);
+            throw new Error(`Server routing error: API endpoint ${endpoint} returned HTML instead of JSON. Please check server configuration.`);
+        }
+
         // Check response status before parsing JSON
         if (!response.ok) {
             console.error(`❌ API Error (${response.status}):`, text);
@@ -2429,146 +2438,6 @@ function displayRoadmap(roadmapData) {
             </div>
         `;
         elements.roadmapContent.appendChild(motivationSection);
-    }
-}
-        phaseBlock.className = 'phase-block';
-        phaseBlock.setAttribute('data-aos', 'fade-up');
-        phaseBlock.setAttribute('data-aos-delay', idx * 100);
-        
-        let phaseHTML = `
-            <div class="phase-header-content">
-                <h2>${phase.phase}</h2>
-                <span class="phase-duration">⏱️ ${phase.duration}</span>
-            </div>
-        `;
-        
-        // Prerequisites and hours info
-        if (phase.prerequisites || phase.weeklyHours) {
-            phaseHTML += `<div class="phase-info-bar">`;
-            if (phase.prerequisites) {
-                phaseHTML += `<span class="info-badge">📋 Prerequisite: ${phase.prerequisites}</span>`;
-            }
-            if (phase.weeklyHours) {
-                phaseHTML += `<span class="info-badge">⏱️ ${phase.weeklyHours}</span>`;
-            }
-            phaseHTML += `</div>`;
-        }
-        
-        // Goals section
-        if (phase.goals && phase.goals.length > 0) {
-            phaseHTML += `
-                <div class="phase-section">
-                    <h3>🎯 Goals</h3>
-                    <ul class="goals-list">
-                        ${phase.goals.map(goal => `<li>${goal}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-        }
-        
-        // Tools to learn
-        if (phase.tools && phase.tools.length > 0) {
-            phaseHTML += `
-                <div class="phase-section">
-                    <h3>🛠️ Tools to Learn</h3>
-                    <div class="tools-container">
-                        ${phase.tools.map(tool => `
-                            <div class="tool-card">
-                                <div class="tool-name"><strong>${tool.name}</strong></div>
-                                <div class="tool-purpose"><em>Purpose:</em> ${tool.purpose}</div>
-                                <div class="tool-steps"><em>Steps:</em> ${tool.step}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Resources section
-        if (phase.resources && phase.resources.length > 0) {
-            phaseHTML += `
-                <div class="phase-section">
-                    <h3>📚 Resources</h3>
-                    <table class="phase-table resources-table">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Name</th>
-                                <th>Link</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${phase.resources.map(res => `
-                                <tr>
-                                    <td><span class="badge">${res.type}</span></td>
-                                    <td>${res.name}</td>
-                                    <td><a href="${res.link}" target="_blank" rel="noopener">Visit →</a></td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-        }
-        
-        // Labs section with difficulty and duration
-        if (phase.labs && phase.labs.length > 0) {
-            phaseHTML += `
-                <div class="phase-section">
-                    <h3>🎮 Hands-On Labs</h3>
-                    <table class="phase-table labs-table">
-                        <thead>
-                            <tr>
-                                <th>Platform</th>
-                                <th>Lab/Machine</th>
-                                ${phase.labs[0].difficulty ? '<th>Difficulty</th>' : ''}
-                                ${phase.labs[0].duration ? '<th>Duration</th>' : ''}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${phase.labs.map(lab => `
-                                <tr>
-                                    <td><strong>${lab.platform}</strong></td>
-                                    <td>${lab.lab}</td>
-                                    ${lab.difficulty ? `<td><span class="difficulty-badge difficulty-${lab.difficulty.toLowerCase()}">${lab.difficulty}</span></td>` : ''}
-                                    ${lab.duration ? `<td>${lab.duration}</td>` : ''}
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-        }
-        
-        // Daily/Weekly breakdown
-        if (phase.dailyBreakdown && phase.dailyBreakdown.length > 0) {
-            phaseHTML += `
-                <div class="phase-section">
-                    <h3>📅 Daily/Weekly Breakdown</h3>
-                    <div class="breakdown-list">
-                        ${phase.dailyBreakdown.map(item => `<div class="breakdown-item">• ${item}</div>`).join('')}
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Outcome section
-        if (phase.outcome) {
-            phaseHTML += `
-                <div class="phase-section outcome">
-                    <h3>✅ Outcome</h3>
-                    <p>${phase.outcome}</p>
-                </div>
-            `;
-        }
-        
-        phaseBlock.innerHTML = phaseHTML;
-        elements.roadmapContent.appendChild(phaseBlock);
-    });
-    
-    // Trigger animations
-    if (typeof AOS !== 'undefined') {
-        AOS.refresh();
     }
 }
 
