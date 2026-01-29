@@ -1511,6 +1511,14 @@ async function generateRoadmapForCert(certId) {
     if (roadmapTitle) roadmapTitle.textContent = `Your ${certName.split(' - ')[0]} Learning Roadmap`;
     if (roadmapSubtitle) roadmapSubtitle.textContent = `Personalized for your ${level} level • Target: ${certName}`;
     
+    // Clear any existing intervals from previous calls
+    if (window.roadmapCountdownInterval) {
+        clearInterval(window.roadmapCountdownInterval);
+    }
+    if (window.roadmapJokeInterval) {
+        clearInterval(window.roadmapJokeInterval);
+    }
+    
     // Show loading with ETA countdown and rotating jokes
     const roadmapContent = document.getElementById('roadmapContent');
     
@@ -1523,28 +1531,28 @@ async function generateRoadmapForCert(certId) {
             <div class="spinner"></div>
             <p>Building your personalized ${certName.split(' - ')[0]} roadmap...</p>
             <p class="loading-subtext">Analyzing your weaknesses and creating a custom learning path</p>
-            <div class="loading-eta" style="margin-top: 20px; font-size: 14px; color: #666;">
+            <div class="loading-eta">
                 ⏱️ ETA: <span id="etaCountdown">${eta}</span> seconds
             </div>
-            <div class="dev-joke" id="devJoke" style="margin-top: 25px; padding: 15px; background: rgba(255, 107, 53, 0.1); border-radius: 8px; font-size: 14px; color: #ff6b35; font-style: italic;">
+            <div class="dev-joke" id="devJoke">
                 ${DEV_JOKES[0]}
             </div>
         </div>
     `;
     
-    // Countdown timer
+    // Countdown timer - store globally for cleanup
     const etaCountdownEl = document.getElementById('etaCountdown');
-    const countdownInterval = setInterval(() => {
+    window.roadmapCountdownInterval = setInterval(() => {
         eta--;
         if (etaCountdownEl && eta > 0) {
             etaCountdownEl.textContent = eta;
         } else {
-            clearInterval(countdownInterval);
+            clearInterval(window.roadmapCountdownInterval);
         }
     }, 1000);
     
-    // Rotate jokes every 3 seconds
-    const jokeRotationInterval = setInterval(() => {
+    // Rotate jokes every 3 seconds - store globally for cleanup
+    window.roadmapJokeInterval = setInterval(() => {
         currentJokeIndex = (currentJokeIndex + 1) % DEV_JOKES.length;
         const devJokeEl = document.getElementById('devJoke');
         if (devJokeEl) {
@@ -1564,8 +1572,8 @@ async function generateRoadmapForCert(certId) {
         });
         
         // Clear intervals
-        clearInterval(countdownInterval);
-        clearInterval(jokeRotationInterval);
+        if (window.roadmapCountdownInterval) clearInterval(window.roadmapCountdownInterval);
+        if (window.roadmapJokeInterval) clearInterval(window.roadmapJokeInterval);
         
         appState.roadmap = data.roadmap;
         displayRoadmap(data.roadmap);
@@ -1585,8 +1593,8 @@ async function generateRoadmapForCert(certId) {
         console.error('Error generating roadmap:', error);
         
         // Clear intervals
-        clearInterval(countdownInterval);
-        clearInterval(jokeRotationInterval);
+        if (window.roadmapCountdownInterval) clearInterval(window.roadmapCountdownInterval);
+        if (window.roadmapJokeInterval) clearInterval(window.roadmapJokeInterval);
         
         // Show friendly error message (not technical details)
         const errorMessage = error.userMessage || error.message || 'AI is taking longer than expected. Please try again.';
@@ -1595,8 +1603,8 @@ async function generateRoadmapForCert(certId) {
             <div class="error-state">
                 <div class="error-icon">⏳</div>
                 <h3>Roadmap Generation Delayed</h3>
-                <p style="font-size: 16px; color: #666; margin: 15px 0;">${errorMessage}</p>
-                <p style="font-size: 14px; color: #999; margin-bottom: 20px;">The AI service might be experiencing high demand. This usually resolves in a few minutes.</p>
+                <p class="error-message-main">${errorMessage}</p>
+                <p class="error-message-sub">The AI service might be experiencing high demand. This usually resolves in a few minutes.</p>
                 <button class="btn btn-primary" onclick="openCertModal()">Try Again</button>
             </div>
         `;

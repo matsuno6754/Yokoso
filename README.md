@@ -382,6 +382,7 @@ OffSec-AI-Mentor/
 ├── database.db            # SQLite database (auto-created)
 ├── app-new.js             # Deprecated frontend (legacy)
 ├── app-old.js             # Deprecated frontend (legacy)
+├── app-clean.js           # Deprecated frontend (legacy)
 ├── server.js              # Deprecated server (legacy)
 ├── app.py                 # Deprecated Streamlit version (legacy)
 └── requirements.txt       # Python dependencies (for app.py)

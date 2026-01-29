@@ -1032,9 +1032,14 @@ app.post('/api/generate-roadmap', async (req, res) => {
                 response = await callAI(prompt, false, 1);
                 console.log('📄 Roadmap response received, length:', response?.length || 0);
                 
-                // Validate response
-                if (!response || response.length < 100) {
-                    throw new Error('Invalid or empty roadmap response');
+                // Validate response - check for meaningful content
+                if (!response || response.length < 200) {
+                    throw new Error('Roadmap response too short or empty - expected at least 200 characters');
+                }
+                
+                // Check for basic markdown structure
+                if (!response.includes('#') && !response.includes('*')) {
+                    throw new Error('Invalid roadmap format - missing expected markdown structure');
                 }
                 
                 // Success - break out of retry loop
@@ -1048,8 +1053,8 @@ app.post('/api/generate-roadmap', async (req, res) => {
                     throw attemptError;
                 }
                 
-                // Wait a bit before retrying (exponential backoff)
-                const waitTime = 1000 * retryCount;
+                // Wait before retrying with exponential backoff
+                const waitTime = Math.pow(2, retryCount - 1) * 1000; // 1s, 2s exponential
                 console.log(`⏳ Waiting ${waitTime}ms before retry...`);
                 await new Promise(resolve => setTimeout(resolve, waitTime));
             }
